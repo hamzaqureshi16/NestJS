@@ -1,4 +1,4 @@
-import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from '../prisma/prisma.service';
@@ -129,7 +129,7 @@ export class UserService {
           throw new HttpException(
             {
               statusCode: HttpStatus.UNPROCESSABLE_ENTITY,
-              message: `Foreign key constraint failed on field: ${error.meta?.field_name}`,
+              message: `Foreign key constraint failed on field: ${error.meta?.field_name as string}`,
               error: 'Unprocessable Entity',
             },
             HttpStatus.UNPROCESSABLE_ENTITY,
