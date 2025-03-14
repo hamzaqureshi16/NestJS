@@ -7,6 +7,7 @@ import { VerifyUserDto } from './dto/verify-user.dto';
 const mockPrismaService = {
   user: {
     findMany: jest.fn(),
+    findFirst: jest.fn(),
     findUniqueOrThrow: jest.fn(),
     findFirstOrThrow: jest.fn(),
     create: jest.fn(),
@@ -107,5 +108,16 @@ describe('UserService', () => {
 
     // Verify bcrypt wasn't called since we never got a user
     expect(mockBcrypt.compareSync).not.toHaveBeenCalled();
+  });
+
+  it('should find user based on email', async () => {
+    const email = dummyUsers[0].email;
+
+    mockPrismaService.user.findFirst.mockReturnValue(dummyUsers[0]);
+
+    const result = await service.findByEmail(email);
+
+    expect(mockPrismaService.user.findFirst).toHaveBeenCalled();
+    expect(result).toEqual(true);
   });
 });

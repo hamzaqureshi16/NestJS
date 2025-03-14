@@ -1,10 +1,10 @@
 import {
-  Controller,
-  Post,
   Body,
-  Res,
+  Controller,
   HttpException,
   HttpStatus,
+  Post,
+  Res,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { VerifyUserDto } from '../user/dto/verify-user.dto';
@@ -12,8 +12,8 @@ import { CreateUserDto } from '../user/dto/create-user.dto';
 import { ApiBody, ApiResponse } from '@nestjs/swagger';
 import { Response } from 'express';
 import {
-  AuthResponseErrorDto,
   AuthResponseDto,
+  AuthResponseErrorDto,
 } from './Responses/create.response.type';
 
 @Controller('auth')
@@ -42,7 +42,14 @@ export class AuthController {
     return await this.authService
       .login(payload)
       .then((response) => {
-        res.status(HttpStatus.OK).send(response);
+        const { user, token } = response;
+
+        res.status(HttpStatus.OK).send(
+          new AuthResponseDto({
+            user: user,
+            token,
+          }),
+        );
       })
       .catch((error: any) => {
         res

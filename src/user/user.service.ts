@@ -48,6 +48,19 @@ export class UserService {
     }
   }
 
+  async findByEmail(email: string): Promise<boolean> {
+    try {
+      const user = await this.prisma.user.findFirst({
+        where: {
+          email: email,
+        },
+      });
+      return !!user;
+    } catch (error) {
+      this.handlePrismaError(error, 'find one user');
+    }
+  }
+
   async update(updateUserDto: UpdateUserDto) {
     try {
       const user = await this.prisma.user.update({

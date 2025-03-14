@@ -8,6 +8,7 @@ const mockPrismaService = {
   user: {
     findMany: jest.fn(),
     findUnique: jest.fn(),
+    findUniqueOrThrow: jest.fn(),
     create: jest.fn(),
     update: jest.fn(),
     delete: jest.fn(),
@@ -33,14 +34,15 @@ describe('UserController', () => {
     expect(controller).toBeDefined();
   });
 
-  it('should return all users', () => {
+  it('should return all users', async () => {
     mockPrismaService.user.findMany.mockReturnValue(dummyUsers);
-    const users = controller.findAll();
+    const users = await controller.findAll();
     expect(users).toHaveLength(dummyUsers.length);
   });
 
-  it('should return a user', () => {
+  it('should return a user', async () => {
     mockPrismaService.user.findUnique.mockReturnValue(dummyUsers[0]);
-    expect(controller.findOne('1')).toBeDefined();
+    const user = await controller.findOne('1');
+    expect(user).toBeDefined();
   });
 });

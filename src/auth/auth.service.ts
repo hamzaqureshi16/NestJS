@@ -3,7 +3,7 @@ import { UserService } from '../user/user.service';
 import { VerifyUserDto } from '../user/dto/verify-user.dto';
 import { CreateUserDto } from '../user/dto/create-user.dto';
 import { JwtService } from '@nestjs/jwt';
-import { AuthResponse } from './Responses/create.response.type';
+import { AuthResponseDto } from './Responses/create.response.type';
 
 @Injectable()
 export class AuthService {
@@ -12,7 +12,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async login(verifyUserDto: VerifyUserDto): Promise<AuthResponse> {
+  async login(verifyUserDto: VerifyUserDto): Promise<AuthResponseDto> {
     const user = await this.userService.verify(verifyUserDto);
     if (!user) {
       throw new Error('User not found');
@@ -27,7 +27,7 @@ export class AuthService {
     };
   }
 
-  async signup(createUserDto: CreateUserDto): Promise<AuthResponse> {
+  async signup(createUserDto: CreateUserDto): Promise<AuthResponseDto> {
     const user = await this.userService.create(createUserDto);
 
     return {
